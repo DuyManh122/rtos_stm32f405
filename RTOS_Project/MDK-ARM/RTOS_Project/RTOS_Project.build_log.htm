@@ -27,14 +27,361 @@ Project File Date:  11/13/2024
 <h2>Output:</h2>
 *** Using Compiler 'V5.03 [Build 24]', folder: 'D:\KeilC\KeilCDownload\ARM\ARM_Compiler_5\Bin'
 Build target 'RTOS_Project'
+assembling startup_stm32f405xx.s...
+compiling stm32f4xx_spi.c...
+../Core/Inc/stm32f4xx_spi.h(79): error:  #256: invalid redeclaration of type name "SPI_InitTypeDef" (declared at line 84 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h")
+  }SPI_InitTypeDef;
+../Core/Inc/stm32f4xx_spi.h(157): warning:  #47-D: incompatible redefinition of macro "IS_SPI_MODE" (declared at line 527 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h")
+  #define IS_SPI_MODE(MODE) (((MODE) == SPI_Mode_Master) || \
+../Core/Inc/stm32f4xx_spi.h(169): warning:  #47-D: incompatible redefinition of macro "IS_SPI_DATASIZE" (declared at line 557 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h")
+  #define IS_SPI_DATASIZE(DATASIZE) (((DATASIZE) == SPI_DataSize_16b) || \
+../Core/Inc/stm32f4xx_spi.h(181): warning:  #47-D: incompatible redefinition of macro "IS_SPI_CPOL" (declared at line 565 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h")
+  #define IS_SPI_CPOL(CPOL) (((CPOL) == SPI_CPOL_Low) || \
+../Core/Inc/stm32f4xx_spi.h(193): warning:  #47-D: incompatible redefinition of macro "IS_SPI_CPHA" (declared at line 573 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h")
+  #define IS_SPI_CPHA(CPHA) (((CPHA) == SPI_CPHA_1Edge) || \
+../Core/Inc/stm32f4xx_spi.h(205): warning:  #47-D: incompatible redefinition of macro "IS_SPI_NSS" (declared at line 581 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h")
+  #define IS_SPI_NSS(NSS) (((NSS) == SPI_NSS_Soft) || \
+../Core/Inc/stm32f4xx_spi.h(223): warning:  #47-D: incompatible redefinition of macro "IS_SPI_BAUDRATE_PRESCALER" (declared at line 590 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h")
+  #define IS_SPI_BAUDRATE_PRESCALER(PRESCALER) (((PRESCALER) == SPI_BaudRatePrescaler_2) || \
+../Core/Inc/stm32f4xx_spi.h(241): warning:  #47-D: incompatible redefinition of macro "IS_SPI_FIRST_BIT" (declared at line 604 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h")
+  #define IS_SPI_FIRST_BIT(BIT) (((BIT) == SPI_FirstBit_MSB) || \
+../Core/Inc/stm32f4xx_spi.h(384): warning:  #47-D: incompatible redefinition of macro "IS_SPI_DIRECTION" (declared at line 535 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h")
+  #define IS_SPI_DIRECTION(DIRECTION) (((DIRECTION) == SPI_Direction_Rx) || \
+../Core/Inc/stm32f4xx_spi.h(426): warning:  #47-D: incompatible redefinition of macro "SPI_FLAG_CRCERR" (declared at line 317 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h")
+  #define SPI_FLAG_CRCERR                 ((uint16_t)0x0010)
+../Core/Inc/stm32f4xx_spi.h(427): warning:  #47-D: incompatible redefinition of macro "SPI_FLAG_MODF" (declared at line 318 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h")
+  #define SPI_FLAG_MODF                   ((uint16_t)0x0020)
+../Core/Inc/stm32f4xx_spi.h(446): warning:  #47-D: incompatible redefinition of macro "IS_SPI_CRC_POLYNOMIAL" (declared at line 628 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h")
+  #define IS_SPI_CRC_POLYNOMIAL(POLYNOMIAL) ((POLYNOMIAL) >= 0x1)
+../Core/Inc/stm32f4xx_spi.h(457): warning:  #47-D: incompatible redefinition of macro "SPI_IT_TXE" (declared at line 304 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h")
+  #define SPI_IT_TXE                   SPI_I2S_IT_TXE
+../Core/Inc/stm32f4xx_spi.h(458): warning:  #47-D: incompatible redefinition of macro "SPI_IT_RXNE" (declared at line 305 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h")
+  #define SPI_IT_RXNE                  SPI_I2S_IT_RXNE
+../Core/Inc/stm32f4xx_spi.h(459): warning:  #47-D: incompatible redefinition of macro "SPI_IT_ERR" (declared at line 306 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h")
+  #define SPI_IT_ERR                   SPI_I2S_IT_ERR
+../Core/Inc/stm32f4xx_spi.h(461): warning:  #47-D: incompatible redefinition of macro "SPI_FLAG_RXNE" (declared at line 314 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h")
+  #define SPI_FLAG_RXNE                SPI_I2S_FLAG_RXNE
+../Core/Inc/stm32f4xx_spi.h(462): warning:  #47-D: incompatible redefinition of macro "SPI_FLAG_TXE" (declared at line 315 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h")
+  #define SPI_FLAG_TXE                 SPI_I2S_FLAG_TXE
+../Core/Inc/stm32f4xx_spi.h(463): warning:  #47-D: incompatible redefinition of macro "SPI_FLAG_OVR" (declared at line 319 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h")
+  #define SPI_FLAG_OVR                 SPI_I2S_FLAG_OVR
+../Core/Inc/stm32f4xx_spi.h(464): warning:  #47-D: incompatible redefinition of macro "SPI_FLAG_BSY" (declared at line 316 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h")
+  #define SPI_FLAG_BSY                 SPI_I2S_FLAG_BSY
+../Core/Inc/stm32f4xx_rcc.h(59): warning:  #47-D: incompatible redefinition of macro "RCC_HSE_OFF" (declared at line 118 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h")
+  #define RCC_HSE_OFF                      ((uint8_t)0x00)
+../Core/Inc/stm32f4xx_rcc.h(60): warning:  #47-D: incompatible redefinition of macro "RCC_HSE_ON" (declared at line 119 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h")
+  #define RCC_HSE_ON                       ((uint8_t)0x01)
+../Core/Inc/stm32f4xx_rcc.h(62): warning:  #47-D: incompatible redefinition of macro "IS_RCC_HSE" (declared at line 1356 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h")
+  #define IS_RCC_HSE(HSE) (((HSE) == RCC_HSE_OFF) || ((HSE) == RCC_HSE_ON) || \
+../Core/Inc/stm32f4xx_rcc.h(75): warning:  #47-D: incompatible redefinition of macro "IS_RCC_PLLM_VALUE" (declared at line 1409 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h")
+  #define IS_RCC_PLLM_VALUE(VALUE) ((VALUE) <= 63)
+../Core/Inc/stm32f4xx_rcc.h(76): warning:  #47-D: incompatible redefinition of macro "IS_RCC_PLLN_VALUE" (declared at line 6931 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc_ex.h")
+  #define IS_RCC_PLLN_VALUE(VALUE) ((192 <= (VALUE)) && ((VALUE) <= 432))
+../Core/Inc/stm32f4xx_rcc.h(77): warning:  #47-D: incompatible redefinition of macro "IS_RCC_PLLP_VALUE" (declared at line 1411 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h")
+  #define IS_RCC_PLLP_VALUE(VALUE) (((VALUE) == 2) || ((VALUE) == 4) || ((VALUE) == 6) || ((VALUE) == 8))
+../Core/Inc/stm32f4xx_rcc.h(78): warning:  #47-D: incompatible redefinition of macro "IS_RCC_PLLQ_VALUE" (declared at line 1413 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h")
+  #define IS_RCC_PLLQ_VALUE(VALUE) ((4 <= (VALUE)) && ((VALUE) <= 15))
+../Core/Inc/stm32f4xx_rcc.h(80): warning:  #47-D: incompatible redefinition of macro "IS_RCC_PLLI2SN_VALUE" (declared at line 6932 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc_ex.h")
+  #define IS_RCC_PLLI2SN_VALUE(VALUE) ((192 <= (VALUE)) && ((VALUE) <= 432))
+../Core/Inc/stm32f4xx_rcc.h(81): warning:  #47-D: incompatible redefinition of macro "IS_RCC_PLLI2SR_VALUE" (declared at line 6966 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc_ex.h")
+  #define IS_RCC_PLLI2SR_VALUE(VALUE) ((2 <= (VALUE)) && ((VALUE) <= 7))   
+../Core/Inc/stm32f4xx_rcc.h(111): warning:  #47-D: incompatible redefinition of macro "IS_RCC_HCLK" (declared at line 1415 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h")
+  #define IS_RCC_HCLK(HCLK) (((HCLK) == RCC_SYSCLK_Div1) || ((HCLK) == RCC_SYSCLK_Div2) || \
+../Core/Inc/stm32f4xx_rcc.h(128): warning:  #47-D: incompatible redefinition of macro "IS_RCC_PCLK" (declared at line 1423 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h")
+  #define IS_RCC_PCLK(PCLK) (((PCLK) == RCC_HCLK_Div1) || ((PCLK) == RCC_HCLK_Div2) || \
+../Core/Inc/stm32f4xx_rcc.h(158): warning:  #47-D: incompatible redefinition of macro "RCC_LSE_OFF" (declared at line 128 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h")
+  #define RCC_LSE_OFF                      ((uint8_t)0x00)
+../Core/Inc/stm32f4xx_rcc.h(159): warning:  #47-D: incompatible redefinition of macro "RCC_LSE_ON" (declared at line 129 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h")
+  #define RCC_LSE_ON                       ((uint8_t)0x01)
+../Core/Inc/stm32f4xx_rcc.h(161): warning:  #47-D: incompatible redefinition of macro "IS_RCC_LSE" (declared at line 1359 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h")
+  #define IS_RCC_LSE(LSE) (((LSE) == RCC_LSE_OFF) || ((LSE) == RCC_LSE_ON) || \
+../Core/Inc/stm32f4xx_rcc.h(202): warning:  #47-D: incompatible redefinition of macro "IS_RCC_RTCCLK_SOURCE" (declared at line 3616 of "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h")
+  #define IS_RCC_RTCCLK_SOURCE(SOURCE) (((SOURCE) == RCC_RTCCLKSource_LSE) || \
+../Core/Inc/stm32f4xx_rcc.h(370): warning:  #47-D: incompatible redefinition of macro "IS_RCC_MCO1SOURCE" (declared at line 1429 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h")
+  #define IS_RCC_MCO1SOURCE(SOURCE) (((SOURCE) == RCC_MCO1Source_HSI) || ((SOURCE) == RCC_MCO1Source_LSE) || \
+../Core/Inc/stm32f4xx_rcc.h(392): warning:  #47-D: incompatible redefinition of macro "IS_RCC_MCO2SOURCE" (declared at line 7159 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc_ex.h")
+  #define IS_RCC_MCO2SOURCE(SOURCE) (((SOURCE) == RCC_MCO2Source_SYSCLK) || ((SOURCE) == RCC_MCO2Source_PLLI2SCLK)|| \
+../Core/Inc/stm32f4xx_rcc.h(425): warning:  #47-D: incompatible redefinition of macro "IS_RCC_CALIBRATION_VALUE" (declared at line 1435 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h")
+  #define IS_RCC_CALIBRATION_VALUE(VALUE) ((VALUE) <= 0x1F)
+..\Core\Src\stm32f4xx_spi.c(175): warning:  #47-D: incompatible redefinition of macro "SPI_CR2_FRF" (declared at line 11175 of "../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h")
+  #define SPI_CR2_FRF               ((uint16_t)0x0010)
+..\Core\Src\stm32f4xx_spi.c: 37 warnings, 1 error
+compiling stm32f4xx_rcc.c...
+../Core/Inc/stm32f4xx_rcc.h(59): warning:  #47-D: incompatible redefinition of macro "RCC_HSE_OFF" (declared at line 118 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h")
+  #define RCC_HSE_OFF                      ((uint8_t)0x00)
+../Core/Inc/stm32f4xx_rcc.h(60): warning:  #47-D: incompatible redefinition of macro "RCC_HSE_ON" (declared at line 119 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h")
+  #define RCC_HSE_ON                       ((uint8_t)0x01)
+../Core/Inc/stm32f4xx_rcc.h(62): warning:  #47-D: incompatible redefinition of macro "IS_RCC_HSE" (declared at line 1356 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h")
+  #define IS_RCC_HSE(HSE) (((HSE) == RCC_HSE_OFF) || ((HSE) == RCC_HSE_ON) || \
+../Core/Inc/stm32f4xx_rcc.h(75): warning:  #47-D: incompatible redefinition of macro "IS_RCC_PLLM_VALUE" (declared at line 1409 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h")
+  #define IS_RCC_PLLM_VALUE(VALUE) ((VALUE) <= 63)
+../Core/Inc/stm32f4xx_rcc.h(76): warning:  #47-D: incompatible redefinition of macro "IS_RCC_PLLN_VALUE" (declared at line 6931 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc_ex.h")
+  #define IS_RCC_PLLN_VALUE(VALUE) ((192 <= (VALUE)) && ((VALUE) <= 432))
+../Core/Inc/stm32f4xx_rcc.h(77): warning:  #47-D: incompatible redefinition of macro "IS_RCC_PLLP_VALUE" (declared at line 1411 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h")
+  #define IS_RCC_PLLP_VALUE(VALUE) (((VALUE) == 2) || ((VALUE) == 4) || ((VALUE) == 6) || ((VALUE) == 8))
+../Core/Inc/stm32f4xx_rcc.h(78): warning:  #47-D: incompatible redefinition of macro "IS_RCC_PLLQ_VALUE" (declared at line 1413 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h")
+  #define IS_RCC_PLLQ_VALUE(VALUE) ((4 <= (VALUE)) && ((VALUE) <= 15))
+../Core/Inc/stm32f4xx_rcc.h(80): warning:  #47-D: incompatible redefinition of macro "IS_RCC_PLLI2SN_VALUE" (declared at line 6932 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc_ex.h")
+  #define IS_RCC_PLLI2SN_VALUE(VALUE) ((192 <= (VALUE)) && ((VALUE) <= 432))
+../Core/Inc/stm32f4xx_rcc.h(81): warning:  #47-D: incompatible redefinition of macro "IS_RCC_PLLI2SR_VALUE" (declared at line 6966 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc_ex.h")
+  #define IS_RCC_PLLI2SR_VALUE(VALUE) ((2 <= (VALUE)) && ((VALUE) <= 7))   
+../Core/Inc/stm32f4xx_rcc.h(111): warning:  #47-D: incompatible redefinition of macro "IS_RCC_HCLK" (declared at line 1415 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h")
+  #define IS_RCC_HCLK(HCLK) (((HCLK) == RCC_SYSCLK_Div1) || ((HCLK) == RCC_SYSCLK_Div2) || \
+../Core/Inc/stm32f4xx_rcc.h(128): warning:  #47-D: incompatible redefinition of macro "IS_RCC_PCLK" (declared at line 1423 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h")
+  #define IS_RCC_PCLK(PCLK) (((PCLK) == RCC_HCLK_Div1) || ((PCLK) == RCC_HCLK_Div2) || \
+../Core/Inc/stm32f4xx_rcc.h(158): warning:  #47-D: incompatible redefinition of macro "RCC_LSE_OFF" (declared at line 128 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h")
+  #define RCC_LSE_OFF                      ((uint8_t)0x00)
+../Core/Inc/stm32f4xx_rcc.h(159): warning:  #47-D: incompatible redefinition of macro "RCC_LSE_ON" (declared at line 129 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h")
+  #define RCC_LSE_ON                       ((uint8_t)0x01)
+../Core/Inc/stm32f4xx_rcc.h(161): warning:  #47-D: incompatible redefinition of macro "IS_RCC_LSE" (declared at line 1359 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h")
+  #define IS_RCC_LSE(LSE) (((LSE) == RCC_LSE_OFF) || ((LSE) == RCC_LSE_ON) || \
+../Core/Inc/stm32f4xx_rcc.h(202): warning:  #47-D: incompatible redefinition of macro "IS_RCC_RTCCLK_SOURCE" (declared at line 3616 of "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h")
+  #define IS_RCC_RTCCLK_SOURCE(SOURCE) (((SOURCE) == RCC_RTCCLKSource_LSE) || \
+../Core/Inc/stm32f4xx_rcc.h(370): warning:  #47-D: incompatible redefinition of macro "IS_RCC_MCO1SOURCE" (declared at line 1429 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h")
+  #define IS_RCC_MCO1SOURCE(SOURCE) (((SOURCE) == RCC_MCO1Source_HSI) || ((SOURCE) == RCC_MCO1Source_LSE) || \
+../Core/Inc/stm32f4xx_rcc.h(392): warning:  #47-D: incompatible redefinition of macro "IS_RCC_MCO2SOURCE" (declared at line 7159 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc_ex.h")
+  #define IS_RCC_MCO2SOURCE(SOURCE) (((SOURCE) == RCC_MCO2Source_SYSCLK) || ((SOURCE) == RCC_MCO2Source_PLLI2SCLK)|| \
+../Core/Inc/stm32f4xx_rcc.h(425): warning:  #47-D: incompatible redefinition of macro "IS_RCC_CALIBRATION_VALUE" (declared at line 1435 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h")
+  #define IS_RCC_CALIBRATION_VALUE(VALUE) ((VALUE) <= 0x1F)
+..\Core\Src\stm32f4xx_rcc.c(74): warning:  #47-D: incompatible redefinition of macro "HSION_BitNumber" (declared at line 3683 of "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h")
+  #define HSION_BitNumber           0x00
+..\Core\Src\stm32f4xx_rcc.c(75): warning:  #47-D: incompatible redefinition of macro "CR_HSION_BB" (declared at line 3716 of "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h")
+  #define CR_HSION_BB               (PERIPH_BB_BASE + (CR_OFFSET * 32) + (HSION_BitNumber * 4))
+..\Core\Src\stm32f4xx_rcc.c(77): warning:  #47-D: incompatible redefinition of macro "CSSON_BitNumber" (declared at line 3688 of "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h")
+  #define CSSON_BitNumber           0x13
+..\Core\Src\stm32f4xx_rcc.c(78): warning:  #47-D: incompatible redefinition of macro "CR_CSSON_BB" (declared at line 3717 of "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h")
+  #define CR_CSSON_BB               (PERIPH_BB_BASE + (CR_OFFSET * 32) + (CSSON_BitNumber * 4))
+..\Core\Src\stm32f4xx_rcc.c(80): warning:  #47-D: incompatible redefinition of macro "PLLON_BitNumber" (declared at line 3690 of "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h")
+  #define PLLON_BitNumber           0x18
+..\Core\Src\stm32f4xx_rcc.c(81): warning:  #47-D: incompatible redefinition of macro "CR_PLLON_BB" (declared at line 3718 of "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h")
+  #define CR_PLLON_BB               (PERIPH_BB_BASE + (CR_OFFSET * 32) + (PLLON_BitNumber * 4))
+..\Core\Src\stm32f4xx_rcc.c(83): warning:  #47-D: incompatible redefinition of macro "PLLI2SON_BitNumber" (declared at line 3692 of "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h")
+  #define PLLI2SON_BitNumber        0x1A
+..\Core\Src\stm32f4xx_rcc.c(84): warning:  #47-D: incompatible redefinition of macro "CR_PLLI2SON_BB" (declared at line 3719 of "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h")
+  #define CR_PLLI2SON_BB            (PERIPH_BB_BASE + (CR_OFFSET * 32) + (PLLI2SON_BitNumber * 4))
+..\Core\Src\stm32f4xx_rcc.c(89): warning:  #47-D: incompatible redefinition of macro "I2SSRC_BitNumber" (declared at line 3693 of "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h")
+  #define I2SSRC_BitNumber          0x17
+..\Core\Src\stm32f4xx_rcc.c(90): warning:  #47-D: incompatible redefinition of macro "CFGR_I2SSRC_BB" (declared at line 3726 of "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h")
+  #define CFGR_I2SSRC_BB            (PERIPH_BB_BASE + (CFGR_OFFSET * 32) + (I2SSRC_BitNumber * 4))
+..\Core\Src\stm32f4xx_rcc.c(95): warning:  #47-D: incompatible redefinition of macro "RTCEN_BitNumber" (declared at line 3694 of "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h")
+  #define RTCEN_BitNumber           0x0F
+..\Core\Src\stm32f4xx_rcc.c(96): warning:  #47-D: incompatible redefinition of macro "BDCR_RTCEN_BB" (declared at line 3727 of "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h")
+  #define BDCR_RTCEN_BB             (PERIPH_BB_BASE + (BDCR_OFFSET * 32) + (RTCEN_BitNumber * 4))
+..\Core\Src\stm32f4xx_rcc.c(98): warning:  #47-D: incompatible redefinition of macro "BDRST_BitNumber" (declared at line 3696 of "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h")
+  #define BDRST_BitNumber           0x10
+..\Core\Src\stm32f4xx_rcc.c(99): warning:  #47-D: incompatible redefinition of macro "BDCR_BDRST_BB" (declared at line 3728 of "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h")
+  #define BDCR_BDRST_BB             (PERIPH_BB_BASE + (BDCR_OFFSET * 32) + (BDRST_BitNumber * 4))
+..\Core\Src\stm32f4xx_rcc.c(103): warning:  #47-D: incompatible redefinition of macro "LSION_BitNumber" (declared at line 3699 of "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h")
+  #define LSION_BitNumber           0x00
+..\Core\Src\stm32f4xx_rcc.c(104): warning:  #47-D: incompatible redefinition of macro "CSR_LSION_BB" (declared at line 3721 of "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h")
+  #define CSR_LSION_BB              (PERIPH_BB_BASE + (CSR_OFFSET * 32) + (LSION_BitNumber * 4))
+..\Core\Src\stm32f4xx_rcc.c(117): warning:  #47-D: incompatible redefinition of macro "CIR_BYTE2_ADDRESS" (declared at line 3711 of "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h")
+  #define CIR_BYTE2_ADDRESS         ((uint32_t)(RCC_BASE + 0x0C + 0x01))
+..\Core\Src\stm32f4xx_rcc.c: 35 warnings, 0 errors
 compiling main.c...
-../Core/Src/main.c(399): warning:  #177-D: function "FLASH_DMA_Write" was declared but never referenced
-  static HAL_StatusTypeDef FLASH_DMA_Write(uint32_t Address, uint32_t Data)
+../Core/Src/main.c(94): warning:  #9-D: nested comment is not allowed
+  /* USER CODE END 0 */
 ../Core/Src/main.c: 1 warning, 0 errors
-linking...
-Program Size: Code=14276 RO-data=580 RW-data=144 ZI-data=30944  
-FromELF: creating hex file...
-"RTOS_Project\RTOS_Project.axf" - 0 Error(s), 1 Warning(s).
+compiling freertos.c...
+compiling stm32f4xx_it.c...
+compiling stm32f4xx_hal_msp.c...
+compiling stm32f4xx_hal_timebase_tim.c...
+compiling stm32f4xx_ll_adc.c...
+compiling stm32f4xx_hal_adc_ex.c...
+compiling stm32f4xx_hal_adc.c...
+compiling stm32f4xx_hal_flash.c...
+compiling stm32f4xx_hal_rcc_ex.c...
+compiling stm32f4xx_hal_rcc.c...
+compiling stm32f4xx_hal_flash_ramfunc.c...
+compiling stm32f4xx_hal_flash_ex.c...
+compiling stm32f4xx_hal_gpio.c...
+compiling stm32f4xx_hal_pwr.c...
+compiling stm32f4xx_hal_dma.c...
+compiling stm32f4xx_hal_dma_ex.c...
+compiling stm32f4xx_hal_pwr_ex.c...
+compiling stm32f4xx_hal_cortex.c...
+compiling stm32f4xx_hal.c...
+compiling stm32f4xx_hal_exti.c...
+compiling stm32f4xx_hal_spi.c...
+compiling stm32f4xx_hal_tim.c...
+compiling croutine.c...
+compiling event_groups.c...
+compiling list.c...
+compiling queue.c...
+compiling stream_buffer.c...
+compiling tasks.c...
+compiling timers.c...
+compiling cmsis_os.c...
+compiling heap_4.c...
+compiling port.c...
+compiling system_stm32f4xx.c...
+compiling LCD_lib.c...
+compiling stm32f4xx_hal_tim_ex.c...
+compiling LCD_Driver.c...
+../Core/Inc/stm32f4xx_spi.h(79): error:  #256: invalid redeclaration of type name "SPI_InitTypeDef" (declared at line 84 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h")
+  }SPI_InitTypeDef;
+../Core/Inc/stm32f4xx_spi.h(157): warning:  #47-D: incompatible redefinition of macro "IS_SPI_MODE" (declared at line 527 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h")
+  #define IS_SPI_MODE(MODE) (((MODE) == SPI_Mode_Master) || \
+../Core/Inc/stm32f4xx_spi.h(169): warning:  #47-D: incompatible redefinition of macro "IS_SPI_DATASIZE" (declared at line 557 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h")
+  #define IS_SPI_DATASIZE(DATASIZE) (((DATASIZE) == SPI_DataSize_16b) || \
+../Core/Inc/stm32f4xx_spi.h(181): warning:  #47-D: incompatible redefinition of macro "IS_SPI_CPOL" (declared at line 565 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h")
+  #define IS_SPI_CPOL(CPOL) (((CPOL) == SPI_CPOL_Low) || \
+../Core/Inc/stm32f4xx_spi.h(193): warning:  #47-D: incompatible redefinition of macro "IS_SPI_CPHA" (declared at line 573 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h")
+  #define IS_SPI_CPHA(CPHA) (((CPHA) == SPI_CPHA_1Edge) || \
+../Core/Inc/stm32f4xx_spi.h(205): warning:  #47-D: incompatible redefinition of macro "IS_SPI_NSS" (declared at line 581 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h")
+  #define IS_SPI_NSS(NSS) (((NSS) == SPI_NSS_Soft) || \
+../Core/Inc/stm32f4xx_spi.h(223): warning:  #47-D: incompatible redefinition of macro "IS_SPI_BAUDRATE_PRESCALER" (declared at line 590 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h")
+  #define IS_SPI_BAUDRATE_PRESCALER(PRESCALER) (((PRESCALER) == SPI_BaudRatePrescaler_2) || \
+../Core/Inc/stm32f4xx_spi.h(241): warning:  #47-D: incompatible redefinition of macro "IS_SPI_FIRST_BIT" (declared at line 604 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h")
+  #define IS_SPI_FIRST_BIT(BIT) (((BIT) == SPI_FirstBit_MSB) || \
+../Core/Inc/stm32f4xx_spi.h(384): warning:  #47-D: incompatible redefinition of macro "IS_SPI_DIRECTION" (declared at line 535 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h")
+  #define IS_SPI_DIRECTION(DIRECTION) (((DIRECTION) == SPI_Direction_Rx) || \
+../Core/Inc/stm32f4xx_spi.h(426): warning:  #47-D: incompatible redefinition of macro "SPI_FLAG_CRCERR" (declared at line 317 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h")
+  #define SPI_FLAG_CRCERR                 ((uint16_t)0x0010)
+../Core/Inc/stm32f4xx_spi.h(427): warning:  #47-D: incompatible redefinition of macro "SPI_FLAG_MODF" (declared at line 318 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h")
+  #define SPI_FLAG_MODF                   ((uint16_t)0x0020)
+../Core/Inc/stm32f4xx_spi.h(446): warning:  #47-D: incompatible redefinition of macro "IS_SPI_CRC_POLYNOMIAL" (declared at line 628 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h")
+  #define IS_SPI_CRC_POLYNOMIAL(POLYNOMIAL) ((POLYNOMIAL) >= 0x1)
+../Core/Inc/stm32f4xx_spi.h(457): warning:  #47-D: incompatible redefinition of macro "SPI_IT_TXE" (declared at line 304 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h")
+  #define SPI_IT_TXE                   SPI_I2S_IT_TXE
+../Core/Inc/stm32f4xx_spi.h(458): warning:  #47-D: incompatible redefinition of macro "SPI_IT_RXNE" (declared at line 305 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h")
+  #define SPI_IT_RXNE                  SPI_I2S_IT_RXNE
+../Core/Inc/stm32f4xx_spi.h(459): warning:  #47-D: incompatible redefinition of macro "SPI_IT_ERR" (declared at line 306 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h")
+  #define SPI_IT_ERR                   SPI_I2S_IT_ERR
+../Core/Inc/stm32f4xx_spi.h(461): warning:  #47-D: incompatible redefinition of macro "SPI_FLAG_RXNE" (declared at line 314 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h")
+  #define SPI_FLAG_RXNE                SPI_I2S_FLAG_RXNE
+../Core/Inc/stm32f4xx_spi.h(462): warning:  #47-D: incompatible redefinition of macro "SPI_FLAG_TXE" (declared at line 315 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h")
+  #define SPI_FLAG_TXE                 SPI_I2S_FLAG_TXE
+../Core/Inc/stm32f4xx_spi.h(463): warning:  #47-D: incompatible redefinition of macro "SPI_FLAG_OVR" (declared at line 319 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h")
+  #define SPI_FLAG_OVR                 SPI_I2S_FLAG_OVR
+../Core/Inc/stm32f4xx_spi.h(464): warning:  #47-D: incompatible redefinition of macro "SPI_FLAG_BSY" (declared at line 316 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h")
+  #define SPI_FLAG_BSY                 SPI_I2S_FLAG_BSY
+../Core/Inc/stm32f4xx_rcc.h(59): warning:  #47-D: incompatible redefinition of macro "RCC_HSE_OFF" (declared at line 118 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h")
+  #define RCC_HSE_OFF                      ((uint8_t)0x00)
+../Core/Inc/stm32f4xx_rcc.h(60): warning:  #47-D: incompatible redefinition of macro "RCC_HSE_ON" (declared at line 119 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h")
+  #define RCC_HSE_ON                       ((uint8_t)0x01)
+../Core/Inc/stm32f4xx_rcc.h(62): warning:  #47-D: incompatible redefinition of macro "IS_RCC_HSE" (declared at line 1356 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h")
+  #define IS_RCC_HSE(HSE) (((HSE) == RCC_HSE_OFF) || ((HSE) == RCC_HSE_ON) || \
+../Core/Inc/stm32f4xx_rcc.h(75): warning:  #47-D: incompatible redefinition of macro "IS_RCC_PLLM_VALUE" (declared at line 1409 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h")
+  #define IS_RCC_PLLM_VALUE(VALUE) ((VALUE) <= 63)
+../Core/Inc/stm32f4xx_rcc.h(76): warning:  #47-D: incompatible redefinition of macro "IS_RCC_PLLN_VALUE" (declared at line 6931 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc_ex.h")
+  #define IS_RCC_PLLN_VALUE(VALUE) ((192 <= (VALUE)) && ((VALUE) <= 432))
+../Core/Inc/stm32f4xx_rcc.h(77): warning:  #47-D: incompatible redefinition of macro "IS_RCC_PLLP_VALUE" (declared at line 1411 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h")
+  #define IS_RCC_PLLP_VALUE(VALUE) (((VALUE) == 2) || ((VALUE) == 4) || ((VALUE) == 6) || ((VALUE) == 8))
+../Core/Inc/stm32f4xx_rcc.h(78): warning:  #47-D: incompatible redefinition of macro "IS_RCC_PLLQ_VALUE" (declared at line 1413 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h")
+  #define IS_RCC_PLLQ_VALUE(VALUE) ((4 <= (VALUE)) && ((VALUE) <= 15))
+../Core/Inc/stm32f4xx_rcc.h(80): warning:  #47-D: incompatible redefinition of macro "IS_RCC_PLLI2SN_VALUE" (declared at line 6932 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc_ex.h")
+  #define IS_RCC_PLLI2SN_VALUE(VALUE) ((192 <= (VALUE)) && ((VALUE) <= 432))
+../Core/Inc/stm32f4xx_rcc.h(81): warning:  #47-D: incompatible redefinition of macro "IS_RCC_PLLI2SR_VALUE" (declared at line 6966 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc_ex.h")
+  #define IS_RCC_PLLI2SR_VALUE(VALUE) ((2 <= (VALUE)) && ((VALUE) <= 7))   
+../Core/Inc/stm32f4xx_rcc.h(111): warning:  #47-D: incompatible redefinition of macro "IS_RCC_HCLK" (declared at line 1415 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h")
+  #define IS_RCC_HCLK(HCLK) (((HCLK) == RCC_SYSCLK_Div1) || ((HCLK) == RCC_SYSCLK_Div2) || \
+../Core/Inc/stm32f4xx_rcc.h(128): warning:  #47-D: incompatible redefinition of macro "IS_RCC_PCLK" (declared at line 1423 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h")
+  #define IS_RCC_PCLK(PCLK) (((PCLK) == RCC_HCLK_Div1) || ((PCLK) == RCC_HCLK_Div2) || \
+../Core/Inc/stm32f4xx_rcc.h(158): warning:  #47-D: incompatible redefinition of macro "RCC_LSE_OFF" (declared at line 128 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h")
+  #define RCC_LSE_OFF                      ((uint8_t)0x00)
+../Core/Inc/stm32f4xx_rcc.h(159): warning:  #47-D: incompatible redefinition of macro "RCC_LSE_ON" (declared at line 129 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h")
+  #define RCC_LSE_ON                       ((uint8_t)0x01)
+../Core/Inc/stm32f4xx_rcc.h(161): warning:  #47-D: incompatible redefinition of macro "IS_RCC_LSE" (declared at line 1359 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h")
+  #define IS_RCC_LSE(LSE) (((LSE) == RCC_LSE_OFF) || ((LSE) == RCC_LSE_ON) || \
+../Core/Inc/stm32f4xx_rcc.h(202): warning:  #47-D: incompatible redefinition of macro "IS_RCC_RTCCLK_SOURCE" (declared at line 3616 of "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h")
+  #define IS_RCC_RTCCLK_SOURCE(SOURCE) (((SOURCE) == RCC_RTCCLKSource_LSE) || \
+../Core/Inc/stm32f4xx_rcc.h(370): warning:  #47-D: incompatible redefinition of macro "IS_RCC_MCO1SOURCE" (declared at line 1429 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h")
+  #define IS_RCC_MCO1SOURCE(SOURCE) (((SOURCE) == RCC_MCO1Source_HSI) || ((SOURCE) == RCC_MCO1Source_LSE) || \
+../Core/Inc/stm32f4xx_rcc.h(392): warning:  #47-D: incompatible redefinition of macro "IS_RCC_MCO2SOURCE" (declared at line 7159 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc_ex.h")
+  #define IS_RCC_MCO2SOURCE(SOURCE) (((SOURCE) == RCC_MCO2Source_SYSCLK) || ((SOURCE) == RCC_MCO2Source_PLLI2SCLK)|| \
+../Core/Inc/stm32f4xx_rcc.h(425): warning:  #47-D: incompatible redefinition of macro "IS_RCC_CALIBRATION_VALUE" (declared at line 1435 of "../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h")
+  #define IS_RCC_CALIBRATION_VALUE(VALUE) ((VALUE) <= 0x1F)
+..\LCD\LCD_Driver.c(130): warning:  #223-D: function "GPIO_SetBits" declared implicitly
+          LCD_DC_H();
+..\LCD\LCD_Driver.c(130): error:  #20: identifier "GPIO_Pin_8" is undefined
+          LCD_DC_H();
+..\LCD\LCD_Driver.c(132): warning:  #223-D: function "GPIO_ResetBits" declared implicitly
+          LCD_DC_L();
+..\LCD\LCD_Driver.c(132): error:  #20: identifier "GPIO_Pin_8" is undefined
+          LCD_DC_L();
+..\LCD\LCD_Driver.c(135): warning:  #223-D: function "GPIO_ResetBits" declared implicitly
+      LCD_CS_L();
+..\LCD\LCD_Driver.c(135): error:  #20: identifier "GPIO_Pin_7" is undefined
+      LCD_CS_L();
+..\LCD\LCD_Driver.c(137): warning:  #223-D: function "GPIO_SetBits" declared implicitly
+      LCD_CS_H();
+..\LCD\LCD_Driver.c(148): warning:  #223-D: function "GPIO_SetBits" declared implicitly
+      LCD_DC_H();
+..\LCD\LCD_Driver.c(148): error:  #20: identifier "GPIO_Pin_8" is undefined
+      LCD_DC_H();
+..\LCD\LCD_Driver.c(149): warning:  #223-D: function "GPIO_ResetBits" declared implicitly
+      LCD_CS_L();
+..\LCD\LCD_Driver.c(149): error:  #20: identifier "GPIO_Pin_7" is undefined
+      LCD_CS_L();
+..\LCD\LCD_Driver.c(176): error:  #136: struct "<unnamed>" has no field "GPIO_Pin"
+  	GPIO_InitStruct.GPIO_Pin = GPIO_Pin_7 | GPIO_Pin_8 | GPIO_Pin_9 | GPIO_Pin_6 | GPIO_Pin_2;
+..\LCD\LCD_Driver.c(176): error:  #20: identifier "GPIO_Pin_7" is undefined
+  	GPIO_InitStruct.GPIO_Pin = GPIO_Pin_7 | GPIO_Pin_8 | GPIO_Pin_9 | GPIO_Pin_6 | GPIO_Pin_2;
+..\LCD\LCD_Driver.c(176): error:  #20: identifier "GPIO_Pin_8" is undefined
+  	GPIO_InitStruct.GPIO_Pin = GPIO_Pin_7 | GPIO_Pin_8 | GPIO_Pin_9 | GPIO_Pin_6 | GPIO_Pin_2;
+..\LCD\LCD_Driver.c(176): error:  #20: identifier "GPIO_Pin_9" is undefined
+  	GPIO_InitStruct.GPIO_Pin = GPIO_Pin_7 | GPIO_Pin_8 | GPIO_Pin_9 | GPIO_Pin_6 | GPIO_Pin_2;
+..\LCD\LCD_Driver.c(176): error:  #20: identifier "GPIO_Pin_6" is undefined
+  	GPIO_InitStruct.GPIO_Pin = GPIO_Pin_7 | GPIO_Pin_8 | GPIO_Pin_9 | GPIO_Pin_6 | GPIO_Pin_2;
+..\LCD\LCD_Driver.c(176): error:  #20: identifier "GPIO_Pin_2" is undefined
+  	GPIO_InitStruct.GPIO_Pin = GPIO_Pin_7 | GPIO_Pin_8 | GPIO_Pin_9 | GPIO_Pin_6 | GPIO_Pin_2;
+..\LCD\LCD_Driver.c(177): error:  #136: struct "<unnamed>" has no field "GPIO_Mode"
+  	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_OUT;
+..\LCD\LCD_Driver.c(177): error:  #20: identifier "GPIO_Mode_OUT" is undefined
+  	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_OUT;
+..\LCD\LCD_Driver.c(178): error:  #136: struct "<unnamed>" has no field "GPIO_Speed"
+  	GPIO_InitStruct.GPIO_Speed = GPIO_Speed_50MHz;
+..\LCD\LCD_Driver.c(178): error:  #20: identifier "GPIO_Speed_50MHz" is undefined
+  	GPIO_InitStruct.GPIO_Speed = GPIO_Speed_50MHz;
+..\LCD\LCD_Driver.c(179): error:  #136: struct "<unnamed>" has no field "GPIO_OType"
+  	GPIO_InitStruct.GPIO_OType = GPIO_OType_PP;
+..\LCD\LCD_Driver.c(179): error:  #20: identifier "GPIO_OType_PP" is undefined
+  	GPIO_InitStruct.GPIO_OType = GPIO_OType_PP;
+..\LCD\LCD_Driver.c(180): warning:  #223-D: function "GPIO_Init" declared implicitly
+  	GPIO_Init(GPIOB, &GPIO_InitStruct);
+..\LCD\LCD_Driver.c(182): error:  #136: struct "<unnamed>" has no field "GPIO_Pin"
+  	GPIO_InitStruct.GPIO_Pin = GPIO_Pin_4;
+..\LCD\LCD_Driver.c(182): error:  #20: identifier "GPIO_Pin_4" is undefined
+  	GPIO_InitStruct.GPIO_Pin = GPIO_Pin_4;
+..\LCD\LCD_Driver.c(183): error:  #136: struct "<unnamed>" has no field "GPIO_Mode"
+  	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_IN;
+..\LCD\LCD_Driver.c(183): error:  #20: identifier "GPIO_Mode_IN" is undefined
+  	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_IN;
+..\LCD\LCD_Driver.c(184): error:  #136: struct "<unnamed>" has no field "GPIO_Speed"
+  	GPIO_InitStruct.GPIO_Speed = GPIO_Speed_50MHz;
+..\LCD\LCD_Driver.c(185): error:  #136: struct "<unnamed>" has no field "GPIO_OType"
+  	GPIO_InitStruct.GPIO_OType = GPIO_OType_PP;
+..\LCD\LCD_Driver.c(186): error:  #136: struct "<unnamed>" has no field "GPIO_PuPd"
+  	GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_UP;
+..\LCD\LCD_Driver.c(186): error:  #20: identifier "GPIO_PuPd_UP" is undefined
+  	GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_UP;
+..\LCD\LCD_Driver.c(200): warning:  #223-D: function "GPIO_SetBits" declared implicitly
+  	LCD_RST_H();
+..\LCD\LCD_Driver.c(200): error:  #20: identifier "GPIO_Pin_2" is undefined
+  	LCD_RST_H();
+..\LCD\LCD_Driver.c(203): error:  #20: identifier "GPIO_Pin_7" is undefined
+  	LCD_CS_H();
+..\LCD\LCD_Driver.c(204): error:  #20: identifier "GPIO_Pin_6" is undefined
+  	LCD_BKL_H();
+..\LCD\LCD_Driver.c(208): warning:  #223-D: function "GPIO_ResetBits" declared implicitly
+  	LCD_RST_L();
+..\LCD\LCD_Driver.c(362): warning:  #223-D: function "GPIO_ResetBits" declared implicitly
+  	LCD_CS_L();	
+..\LCD\LCD_Driver.c(362): error:  #20: identifier "GPIO_Pin_7" is undefined
+  	LCD_CS_L();	
+..\LCD\LCD_Driver.c: 46 warnings, 30 errors
+compiling User_systick.c...
+..\LCD\User_systick.c(10): warning:  #223-D: function "SysTick_CLKSourceConfig" declared implicitly
+  	SysTick_CLKSourceConfig(SysTick_CLKSource_HCLK_Div8);
+..\LCD\User_systick.c(10): error:  #20: identifier "SysTick_CLKSource_HCLK_Div8" is undefined
+  	SysTick_CLKSourceConfig(SysTick_CLKSource_HCLK_Div8);
+..\LCD\User_systick.c(19): warning:  #223-D: function "SysTick_CLKSourceConfig" declared implicitly
+  	SysTick_CLKSourceConfig(SysTick_CLKSource_HCLK_Div8);
+..\LCD\User_systick.c(19): error:  #20: identifier "SysTick_CLKSource_HCLK_Div8" is undefined
+  	SysTick_CLKSourceConfig(SysTick_CLKSource_HCLK_Div8);
+..\LCD\User_systick.c: 2 warnings, 2 errors
+"RTOS_Project\RTOS_Project.axf" - 33 Error(s), 121 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -58,7 +405,8 @@ Package Vendor: Keil
 
    * Component: ARM::CMSIS:CORE@6.1.0
       Include file:  CMSIS/Core/Include/tz_context.h
-Build Time Elapsed:  00:00:05
+Target not created.
+Build Time Elapsed:  00:01:16
 </pre>
 </body>
 </html>
