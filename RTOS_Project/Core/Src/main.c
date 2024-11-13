@@ -33,9 +33,11 @@
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 #define ADC_Buffer_Size 1
-
+#define FLASH_TIMEOUT_VALUE       50000U /* 50 s */
 // x starts at 0 and end at 63
-#define FLASH_PAGE_X_OFFSET(x) (0x08000000UL + (0x400UL * x))
+#define FLASH_SECTOR_0_TO_4_OFFSET(x) (0x08000000UL + (0x4000UL * x))
+
+static HAL_StatusTypeDef FLASH_DMA_Write(uint32_t Address, uint32_t Data);
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -63,7 +65,9 @@ osMessageQId ADC_QNameHandle;
 uint8_t ADC_QNameBuffer[ 16 * sizeof( uint32_t ) ];
 osStaticMessageQDef_t ADC_QNameControlBlock;
 /* USER CODE BEGIN PV */
-
+uint32_t ADC_Buffer;
+uint32_t FLASH_Data;
+extern FLASH_ProcessTypeDef pFlash;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -148,11 +152,11 @@ int main(void)
   Task01Handle = osThreadCreate(osThread(Task01), NULL);
 
   /* definition and creation of Task02 */
-  osThreadStaticDef(Task02, StartTask02, osPriorityNormal, 0, 1024, Task02Buffer, &Task02ControlBlock);
+  osThreadStaticDef(Task02, StartTask02, osPriorityAboveNormal, 0, 1024, Task02Buffer, &Task02ControlBlock);
   Task02Handle = osThreadCreate(osThread(Task02), NULL);
 
   /* definition and creation of Task03 */
-  osThreadStaticDef(Task03, StartTask03, osPriorityNormal, 0, 1024, Task03Buffer, &Task03ControlBlock);
+  osThreadStaticDef(Task03, StartTask03, osPriorityAboveNormal, 0, 1024, Task03Buffer, &Task03ControlBlock);
   Task03Handle = osThreadCreate(osThread(Task03), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
@@ -292,7 +296,7 @@ static void MX_TIM4_Init(void)
 
   /* USER CODE END TIM4_Init 1 */
   htim4.Instance = TIM4;
-  htim4.Init.Prescaler = 48 - 1;
+  htim4.Init.Prescaler = 480 - 1;
   htim4.Init.CounterMode = TIM_COUNTERMODE_UP;
   htim4.Init.Period = 50000;
   htim4.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
@@ -385,7 +389,54 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
+{
+	if (hadc->Instance == ADC1) {
+			osMessagePut(ADC_QNameHandle, ADC_Buffer, 50);
+	}
+}
 
+static HAL_StatusTypeDef FLASH_DMA_Write(uint32_t Address, uint32_t Data)
+{
+	HAL_StatusTypeDef rc;
+	uint8_t nbiterations;
+	
+	/* Process Locked */
+	__HAL_LOCK(&pFlash);
+	// Wait for last operation to finish
+	rc = FLASH_WaitForLastOperation(FLASH_TIMEOUT_VALUE);
+	if (rc == HAL_OK) {
+		nbiterations = 2U;				
+		for (uint8_t index = 0U; index < nbiterations; index++) {
+			
+			/* Clean the error context */
+			pFlash.ErrorCode = HAL_FLASH_ERROR_NONE;
+			/* Proceed to program the new data */
+			SET_BIT(FLASH->CR, FLASH_CR_PG);
+			/* Write data to the flash address - currently not using DMA */
+			Address = Address + (2U * index);
+			Data = (uint16_t)(Data >> (16U * index));
+			*(__IO uint16_t*)Address = Data;
+			/* End write to flash */
+			
+			/* Wait for last operation to be completed */
+			rc = FLASH_WaitForLastOperation(FLASH_TIMEOUT_VALUE);
+	
+			/* If the program operation is completed, disable the PG Bit */
+			CLEAR_BIT(FLASH->CR, FLASH_CR_PG);
+				
+			/* In case of error, stop writing to flash */
+			if (rc != HAL_OK) {
+				break;
+			}
+		}
+	}
+	
+	/* Process Unlocked */
+	__HAL_UNLOCK(&pFlash);
+	
+	return rc;
+}
 /* USER CODE END 4 */
 
 /* USER CODE BEGIN Header_StartTask01 */
@@ -398,26 +449,36 @@ static void MX_GPIO_Init(void)
 void StartTask01(void const * argument)
 {
   /* USER CODE BEGIN 5 */
-	HAL_StatusTypeDef rc;
-	FLASH_EraseInitTypeDef pEraseInit;
-	uint32_t PageError;
+		HAL_StatusTypeDef rc;
+		FLASH_EraseInitTypeDef pEraseInit;
+		uint32_t PageError;
 	
-	rc = HAL_TIM_Base_Start_IT(&htim4);
-	assert(rc == HAL_OK && "Cannot start TIM4 clock for ADC sampling application");
+		rc = HAL_TIM_Base_Start_IT(&htim4);
+		assert(rc == HAL_OK && "Cannot start TIM4 clock for ADC sampling application");
   
-	pEraseInit.Banks = FLASH_BANK_1;
-	pEraseInit.NbSectors	 = 1;
-	pEraseInit.Sector = FLASH_PAGE_X_OFFSET(50);
-	pEraseInit.TypeErase = FLASH_TYPEERASE_PAGES;
-	
+		pEraseInit.TypeErase = FLASH_TYPEERASE_SECTORS; 
+		pEraseInit.Sector = FLASH_SECTOR_2; 
+		pEraseInit.NbSectors = 1; 
+		pEraseInit.VoltageRange = FLASH_VOLTAGE_RANGE_3;
+
 	
   /* Infinite loop */
   for(;;)
   {
-		rc = HAL_TIM_Base_Start_IT(&htim4);
-		assert(rc == HAL_OK && "Cannot start TIM4 clock for ADC sampling application");
+		// event.value.v hold the actual message (eg. the ADC1 data)
+		osEvent event = osMessageGet(ADC_QNameHandle, osWaitForever);
 		HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_0);
-    osDelay(1000);
+		// Unlock flash
+		HAL_FLASH_Unlock();
+		// Erase first
+		HAL_FLASHEx_Erase(&pEraseInit, &PageError);
+		// Write to flash
+		FLASH_DMA_Write(FLASH_SECTOR_0_TO_4_OFFSET(2), event.value.v);
+		// Lock flash
+		HAL_FLASH_Lock();
+		
+		// Read Flash
+		FLASH_Data = *(__IO uint32_t *)(FLASH_SECTOR_0_TO_4_OFFSET(2));
   }
   /* USER CODE END 5 */
 }
@@ -436,7 +497,7 @@ void StartTask02(void const * argument)
   for(;;)
   {
 		HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_1);
-    osDelay(1000);
+		osDelay(1000);
   }
   /* USER CODE END StartTask02 */
 }
@@ -455,7 +516,7 @@ void StartTask03(void const * argument)
   for(;;)
   {
 		HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_2);
-    osDelay(1000);
+		osDelay(1000);
   }
   /* USER CODE END StartTask03 */
 }
@@ -477,7 +538,9 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     HAL_IncTick();
   }
   /* USER CODE BEGIN Callback 1 */
-
+  if (htim->Instance == TIM4) {
+    HAL_ADC_Start_DMA(&hadc1, &ADC_Buffer, ADC_Buffer_Size);
+  }
   /* USER CODE END Callback 1 */
 }
 
