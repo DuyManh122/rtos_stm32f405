@@ -1,5 +1,7 @@
 --cpu=Cortex-M4.fp
 "rtos_project\startup_stm32f405xx.o"
+"rtos_project\fonts.o"
+"rtos_project\st7789.o"
 "rtos_project\main.o"
 "rtos_project\freertos.o"
 "rtos_project\stm32f4xx_it.o"

@@ -340,7 +340,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F405xx</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS;../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../LCD</IncludePath>
+              <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS;../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../Core/Touch_LCD</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -395,14 +395,14 @@
           <GroupName>Application/User/Core</GroupName>
           <Files>
             <File>
-              <FileName>stm32f4xx_rcc.c</FileName>
+              <FileName>fonts.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Core\Src\stm32f4xx_rcc.c</FilePath>
+              <FilePath>..\Core\Touch_LCD\fonts.c</FilePath>
             </File>
             <File>
-              <FileName>stm32f4xx_spi.c</FileName>
+              <FileName>st7789.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Core\Src\stm32f4xx_spi.c</FilePath>
+              <FilePath>..\Core\Touch_LCD\st7789.c</FilePath>
             </File>
             <File>
               <FileName>main.c</FileName>
@@ -797,26 +797,6 @@
               <FileName>port.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F/port.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>User_Drivers</GroupName>
-          <Files>
-            <File>
-              <FileName>LCD_Driver.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\LCD\LCD_Driver.c</FilePath>
-            </File>
-            <File>
-              <FileName>LCD_lib.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\LCD\LCD_lib.c</FilePath>
-            </File>
-            <File>
-              <FileName>User_systick.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\LCD\User_systick.c</FilePath>
             </File>
           </Files>
         </Group>

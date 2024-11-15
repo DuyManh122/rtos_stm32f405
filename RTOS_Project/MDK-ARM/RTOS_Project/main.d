@@ -49,3 +49,6 @@ rtos_project\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h
 rtos_project\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h
 rtos_project\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h
 rtos_project\main.o: D:\KeilC\KeilCDownload\ARM\ARM_Compiler_5\Bin\..\include\assert.h
+rtos_project\main.o: D:\KeilC\KeilCDownload\ARM\ARM_Compiler_5\Bin\..\include\stdio.h
+rtos_project\main.o: ../Core/Touch_LCD/fonts.h
+rtos_project\main.o: ../Core/Touch_LCD/st7789.h

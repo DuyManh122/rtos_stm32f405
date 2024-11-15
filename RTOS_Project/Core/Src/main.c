@@ -23,6 +23,9 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include <assert.h>
+#include <stdio.h>
+#include "fonts.h"
+#include "st7789.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -127,7 +130,7 @@ int main(void)
   MX_TIM4_Init();
   MX_SPI1_Init();
   /* USER CODE BEGIN 2 */
-
+	ST7789_Init();
   /* USER CODE END 2 */
 
   /* USER CODE BEGIN RTOS_MUTEX */
@@ -305,7 +308,7 @@ static void MX_SPI1_Init(void)
   hspi1.Init.CLKPolarity = SPI_POLARITY_LOW;
   hspi1.Init.CLKPhase = SPI_PHASE_1EDGE;
   hspi1.Init.NSS = SPI_NSS_SOFT;
-  hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_64;
+  hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_4;
   hspi1.Init.FirstBit = SPI_FIRSTBIT_MSB;
   hspi1.Init.TIMode = SPI_TIMODE_DISABLE;
   hspi1.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
@@ -418,16 +421,16 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, RED_LED1_Pin|RED_LED2_Pin|LCD_RST_Pin|RED_LED3_Pin
-                          |LCD_BL_Pin|LCD_CS_Pin|LCD_DC_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, RED_LED1_Pin|RED_LED2_Pin|LCD_RST_Pin|LCD_BL_Pin
+                          |LCD_CS_Pin|LCD_DC_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pins : RED_LED1_Pin RED_LED2_Pin LCD_RST_Pin RED_LED3_Pin
-                           LCD_BL_Pin LCD_CS_Pin LCD_DC_Pin */
-  GPIO_InitStruct.Pin = RED_LED1_Pin|RED_LED2_Pin|LCD_RST_Pin|RED_LED3_Pin
-                          |LCD_BL_Pin|LCD_CS_Pin|LCD_DC_Pin;
+  /*Configure GPIO pins : RED_LED1_Pin RED_LED2_Pin LCD_RST_Pin LCD_BL_Pin
+                           LCD_CS_Pin LCD_DC_Pin */
+  GPIO_InitStruct.Pin = RED_LED1_Pin|RED_LED2_Pin|LCD_RST_Pin|LCD_BL_Pin
+                          |LCD_CS_Pin|LCD_DC_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
 /* USER CODE BEGIN MX_GPIO_Init_2 */
@@ -557,11 +560,15 @@ void StartTask02(void const * argument)
 /* USER CODE END Header_StartTask03 */
 void StartTask03(void const * argument)
 {
+
   /* USER CODE BEGIN StartTask03 */
   /* Infinite loop */
   for(;;)
   {
-		HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_2);
+
+		char S[20];
+		sprintf(S,"ADC value is: %d / 4095", ADC_Buffer);
+		ST7789_WriteString(40,150, S, Font_7x10, WHITE, BLACK);
 		osDelay(1000);
   }
   /* USER CODE END StartTask03 */
