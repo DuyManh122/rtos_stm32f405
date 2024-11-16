@@ -37,7 +37,7 @@
 /* USER CODE BEGIN PD */
 #define ADC_Buffer_Size 1
 #define FLASH_TIMEOUT_VALUE       50000U /* 50 s */
-// x starts at 0 and end at 63
+// x starts at 0 and end at 4
 #define FLASH_SECTOR_0_TO_4_OFFSET(x) (0x08000000UL + (0x4000UL * x))
 
 static HAL_StatusTypeDef FLASH_DMA_Write(uint32_t Address, uint32_t Data);
@@ -385,8 +385,8 @@ static void MX_DMA_Init(void)
   hdma_memtomem_dma2_stream1.Init.Direction = DMA_MEMORY_TO_MEMORY;
   hdma_memtomem_dma2_stream1.Init.PeriphInc = DMA_PINC_ENABLE;
   hdma_memtomem_dma2_stream1.Init.MemInc = DMA_MINC_ENABLE;
-  hdma_memtomem_dma2_stream1.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
-  hdma_memtomem_dma2_stream1.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
+  hdma_memtomem_dma2_stream1.Init.PeriphDataAlignment = DMA_PDATAALIGN_WORD;
+  hdma_memtomem_dma2_stream1.Init.MemDataAlignment = DMA_MDATAALIGN_WORD;
   hdma_memtomem_dma2_stream1.Init.Mode = DMA_NORMAL;
   hdma_memtomem_dma2_stream1.Init.Priority = DMA_PRIORITY_HIGH;
   hdma_memtomem_dma2_stream1.Init.FIFOMode = DMA_FIFOMODE_ENABLE;
@@ -430,7 +430,7 @@ static void MX_GPIO_Init(void)
                           |LCD_CS_Pin|LCD_DC_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
 /* USER CODE BEGIN MX_GPIO_Init_2 */
@@ -448,42 +448,33 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
 static HAL_StatusTypeDef FLASH_DMA_Write(uint32_t Address, uint32_t Data)
 {
 	HAL_StatusTypeDef rc;
-	uint8_t nbiterations;
-	
+
 	/* Process Locked */
 	__HAL_LOCK(&pFlash);
 	// Wait for last operation to finish
 	rc = FLASH_WaitForLastOperation(FLASH_TIMEOUT_VALUE);
-	if (rc == HAL_OK) {
-		nbiterations = 2U;				
-		for (uint8_t index = 0U; index < nbiterations; index++) {
-			
-			/* Clean the error context */
-			pFlash.ErrorCode = HAL_FLASH_ERROR_NONE;
-			/* Proceed to program the new data */
-			SET_BIT(FLASH->CR, FLASH_CR_PG);
-			/* Write data to the flash address - currently not using DMA */
-			Address = Address + (2U * index);
-			Data = (uint16_t)(Data >> (16U * index));
-			*(__IO uint16_t*)Address = Data;
-			/* End write to flash */
-			
-			/* Wait for last operation to be completed */
-			rc = FLASH_WaitForLastOperation(FLASH_TIMEOUT_VALUE);
+
+	CLEAR_BIT(FLASH->CR, FLASH_CR_PSIZE);
+	FLASH->CR |= FLASH_PSIZE_WORD;
+	FLASH->CR |= FLASH_CR_PG;
+
+	/* CPU Write */
+	//*(__IO uint32_t*)Address = Data;
 	
-			/* If the program operation is completed, disable the PG Bit */
-			CLEAR_BIT(FLASH->CR, FLASH_CR_PG);
-				
-			/* In case of error, stop writing to flash */
-			if (rc != HAL_OK) {
-				break;
-			}
-		}
-	}
-	
+	/* Use DMA */
+	HAL_DMA_Start(&hdma_memtomem_dma2_stream1, (uint32_t)&Data, Address, 1);
+	while (HAL_DMA_PollForTransfer(&hdma_memtomem_dma2_stream1, HAL_DMA_FULL_TRANSFER, 100) != HAL_OK);
+			
+
+	/* Wait for last operation to be completed */
+
+	rc = FLASH_WaitForLastOperation((uint32_t)FLASH_TIMEOUT_VALUE);
+
+	/* If the program operation is completed, disable the PG Bit */
+	FLASH->CR &= (~FLASH_CR_PG);
 	/* Process Unlocked */
 	__HAL_UNLOCK(&pFlash);
-	
+
 	return rc;
 }
 /* USER CODE END 4 */
@@ -506,7 +497,7 @@ void StartTask01(void const * argument)
 		assert(rc == HAL_OK && "Cannot start TIM4 clock for ADC sampling application");
   
 		pEraseInit.TypeErase = FLASH_TYPEERASE_SECTORS; 
-		pEraseInit.Sector = FLASH_SECTOR_2; 
+		pEraseInit.Sector = FLASH_SECTOR_3; 
 		pEraseInit.NbSectors = 1; 
 		pEraseInit.VoltageRange = FLASH_VOLTAGE_RANGE_3;
 
@@ -522,12 +513,14 @@ void StartTask01(void const * argument)
 		// Erase first
 		HAL_FLASHEx_Erase(&pEraseInit, &PageError);
 		// Write to flash
-		FLASH_DMA_Write(FLASH_SECTOR_0_TO_4_OFFSET(2), event.value.v);
+		FLASH_DMA_Write(FLASH_SECTOR_0_TO_4_OFFSET(3), event.value.v);
+
 		// Lock flash
 		HAL_FLASH_Lock();
 		
 		// Read Flash
-		FLASH_Data = *(__IO uint32_t *)(FLASH_SECTOR_0_TO_4_OFFSET(2));
+		FLASH_Data = *(__IO uint32_t *)(FLASH_SECTOR_0_TO_4_OFFSET(3));
+
   }
   /* USER CODE END 5 */
 }
@@ -560,7 +553,6 @@ void StartTask02(void const * argument)
 /* USER CODE END Header_StartTask03 */
 void StartTask03(void const * argument)
 {
-
   /* USER CODE BEGIN StartTask03 */
   /* Infinite loop */
   for(;;)
