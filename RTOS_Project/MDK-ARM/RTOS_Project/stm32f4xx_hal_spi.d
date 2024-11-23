@@ -25,6 +25,7 @@ rtos_project\stm32f4xx_hal_spi.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_
 rtos_project\stm32f4xx_hal_spi.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_adc.h
 rtos_project\stm32f4xx_hal_spi.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_adc.h
 rtos_project\stm32f4xx_hal_spi.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_adc_ex.h
+rtos_project\stm32f4xx_hal_spi.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_can.h
 rtos_project\stm32f4xx_hal_spi.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash.h
 rtos_project\stm32f4xx_hal_spi.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ex.h
 rtos_project\stm32f4xx_hal_spi.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ramfunc.h

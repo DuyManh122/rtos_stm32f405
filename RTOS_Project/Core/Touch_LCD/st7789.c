@@ -753,5 +753,5 @@ void ST7789_Test(void)
 	ST7789_WriteString(10, 10, "Filled Tri", Font_7x10, YELLOW, BLACK);
 	ST7789_DrawFilledTriangle(30, 30, 30, 70, 60, 40, WHITE);
 	HAL_Delay(1000);
-
+	ST7789_Fill_Color(WHITE);
 }

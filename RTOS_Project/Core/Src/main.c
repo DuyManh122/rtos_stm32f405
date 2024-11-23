@@ -52,6 +52,9 @@ static HAL_StatusTypeDef FLASH_DMA_Write(uint32_t Address, uint32_t Data);
 ADC_HandleTypeDef hadc1;
 DMA_HandleTypeDef hdma_adc1;
 
+CAN_HandleTypeDef hcan1;
+CAN_HandleTypeDef hcan2;
+
 SPI_HandleTypeDef hspi1;
 
 TIM_HandleTypeDef htim4;
@@ -73,6 +76,7 @@ osStaticMessageQDef_t ADC_QNameControlBlock;
 uint32_t ADC_Buffer;
 uint32_t FLASH_Data;
 extern FLASH_ProcessTypeDef pFlash;
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -82,6 +86,8 @@ static void MX_DMA_Init(void);
 static void MX_ADC1_Init(void);
 static void MX_TIM4_Init(void);
 static void MX_SPI1_Init(void);
+static void MX_CAN1_Init(void);
+static void MX_CAN2_Init(void);
 void StartTask01(void const * argument);
 void StartTask02(void const * argument);
 void StartTask03(void const * argument);
@@ -92,7 +98,20 @@ void StartTask03(void const * argument);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-/******************************************************************************
+
+/* Debounce User Button by timer */
+uint32_t previousMillis = 0;
+uint32_t currentMillis = 0;
+
+uint8_t datacheck = 0;
+
+uint8_t TxData[8];
+uint8_t RxData[8];
+
+CAN_TxHeaderTypeDef TxHeader;
+CAN_RxHeaderTypeDef RxHeader;
+
+uint32_t TxMailbox;
 
 /* USER CODE END 0 */
 
@@ -129,8 +148,24 @@ int main(void)
   MX_ADC1_Init();
   MX_TIM4_Init();
   MX_SPI1_Init();
+  MX_CAN1_Init();
+  MX_CAN2_Init();
   /* USER CODE BEGIN 2 */
 	ST7789_Init();
+	
+	/*Start Can*/
+	HAL_CAN_Start(&hcan1);
+	HAL_CAN_Start(&hcan2);
+	
+	/* Enable Can Interrupt */
+//	HAL_CAN_ActivateNotification(&hcan2, CAN_IT_RX_FIFO0_MSG_PENDING);
+	HAL_CAN_ActivateNotification(&hcan2, CAN_IT_RX_FIFO0_MSG_PENDING);
+	
+	TxHeader.DLC = 2; 						// DataLength
+	TxHeader.IDE = CAN_ID_STD; 		// Can Identifier type
+	TxHeader.StdId = 0x405;				// Standand ID
+	TxHeader.RTR = CAN_RTR_DATA;	// CAN Remote Transmission Request
+	TxHeader.TransmitGlobalTime = DISABLE;
   /* USER CODE END 2 */
 
   /* USER CODE BEGIN RTOS_MUTEX */
@@ -210,7 +245,7 @@ void SystemClock_Config(void)
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
   RCC_OscInitStruct.PLL.PLLM = 8;
-  RCC_OscInitStruct.PLL.PLLN = 96;
+  RCC_OscInitStruct.PLL.PLLN = 60;
   RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
   RCC_OscInitStruct.PLL.PLLQ = 4;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
@@ -224,10 +259,10 @@ void SystemClock_Config(void)
                               |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
   RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
-  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV4;
+  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV2;
 
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_3) != HAL_OK)
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_1) != HAL_OK)
   {
     Error_Handler();
   }
@@ -282,6 +317,111 @@ static void MX_ADC1_Init(void)
   /* USER CODE BEGIN ADC1_Init 2 */
 
   /* USER CODE END ADC1_Init 2 */
+
+}
+
+/**
+  * @brief CAN1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_CAN1_Init(void)
+{
+
+  /* USER CODE BEGIN CAN1_Init 0 */
+
+  /* USER CODE END CAN1_Init 0 */
+
+  /* USER CODE BEGIN CAN1_Init 1 */
+
+  /* USER CODE END CAN1_Init 1 */
+  hcan1.Instance = CAN1;
+  hcan1.Init.Prescaler = 2;
+  hcan1.Init.Mode = CAN_MODE_NORMAL;
+  hcan1.Init.SyncJumpWidth = CAN_SJW_1TQ;
+  hcan1.Init.TimeSeg1 = CAN_BS1_6TQ;
+  hcan1.Init.TimeSeg2 = CAN_BS2_8TQ;
+  hcan1.Init.TimeTriggeredMode = DISABLE;
+  hcan1.Init.AutoBusOff = DISABLE;
+  hcan1.Init.AutoWakeUp = DISABLE;
+  hcan1.Init.AutoRetransmission = DISABLE;
+  hcan1.Init.ReceiveFifoLocked = DISABLE;
+  hcan1.Init.TransmitFifoPriority = DISABLE;
+  if (HAL_CAN_Init(&hcan1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN CAN1_Init 2 */
+
+	/* Enable Can Clock */
+	
+  CAN_FilterTypeDef canfilterconfig;
+	
+	
+  canfilterconfig.FilterActivation = CAN_FILTER_ENABLE;
+  canfilterconfig.FilterBank = 0;  // which filter bank to use from the assigned ones
+  canfilterconfig.FilterFIFOAssignment = CAN_FILTER_FIFO0;
+  canfilterconfig.FilterIdHigh = 0x0000;
+  canfilterconfig.FilterIdLow = 0x0000;
+  canfilterconfig.FilterMaskIdHigh = 0x0000;
+  canfilterconfig.FilterMaskIdLow = 0x0000;
+  canfilterconfig.FilterMode = CAN_FILTERMODE_IDMASK;
+  canfilterconfig.FilterScale = CAN_FILTERSCALE_32BIT;
+  canfilterconfig.SlaveStartFilterBank = 12;  // how many filters to assign to the CAN1 (master can)
+
+  HAL_CAN_ConfigFilter(&hcan1, &canfilterconfig);
+  /* USER CODE END CAN1_Init 2 */
+
+}
+
+/**
+  * @brief CAN2 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_CAN2_Init(void)
+{
+
+  /* USER CODE BEGIN CAN2_Init 0 */
+
+  /* USER CODE END CAN2_Init 0 */
+
+  /* USER CODE BEGIN CAN2_Init 1 */
+
+  /* USER CODE END CAN2_Init 1 */
+  hcan2.Instance = CAN2;
+  hcan2.Init.Prescaler = 2;
+  hcan2.Init.Mode = CAN_MODE_LOOPBACK;
+  hcan2.Init.SyncJumpWidth = CAN_SJW_1TQ;
+  hcan2.Init.TimeSeg1 = CAN_BS1_6TQ;
+  hcan2.Init.TimeSeg2 = CAN_BS2_8TQ;
+  hcan2.Init.TimeTriggeredMode = DISABLE;
+  hcan2.Init.AutoBusOff = DISABLE;
+  hcan2.Init.AutoWakeUp = DISABLE;
+  hcan2.Init.AutoRetransmission = DISABLE;
+  hcan2.Init.ReceiveFifoLocked = DISABLE;
+  hcan2.Init.TransmitFifoPriority = DISABLE;
+  if (HAL_CAN_Init(&hcan2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN CAN2_Init 2 */
+	__HAL_RCC_CAN2_CLK_ENABLE();
+	
+  CAN_FilterTypeDef canfilterconfig;	
+	
+  canfilterconfig.FilterActivation = CAN_FILTER_ENABLE;
+  canfilterconfig.FilterBank = 14;  // which filter bank to use from the assigned ones
+  canfilterconfig.FilterFIFOAssignment = CAN_FILTER_FIFO0;
+  canfilterconfig.FilterIdHigh = 0x0000;
+  canfilterconfig.FilterIdLow = 0x0000;
+  canfilterconfig.FilterMaskIdHigh = 0x0000;
+  canfilterconfig.FilterMaskIdLow = 0x0000;
+  canfilterconfig.FilterMode = CAN_FILTERMODE_IDMASK;
+  canfilterconfig.FilterScale = CAN_FILTERSCALE_32BIT;
+	
+  HAL_CAN_ConfigFilter(&hcan2, &canfilterconfig);	
+  /* USER CODE END CAN2_Init 2 */
 
 }
 
@@ -342,7 +482,7 @@ static void MX_TIM4_Init(void)
 
   /* USER CODE END TIM4_Init 1 */
   htim4.Instance = TIM4;
-  htim4.Init.Prescaler = 480 - 1;
+  htim4.Init.Prescaler = 600 - 1;
   htim4.Init.CounterMode = TIM_COUNTERMODE_UP;
   htim4.Init.Period = 50000;
   htim4.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
@@ -414,6 +554,9 @@ static void MX_GPIO_Init(void)
 {
   GPIO_InitTypeDef GPIO_InitStruct = {0};
 /* USER CODE BEGIN MX_GPIO_Init_1 */
+	  __HAL_RCC_CAN1_CLK_ENABLE();
+		__HAL_RCC_CAN2_CLK_ENABLE();
+
 /* USER CODE END MX_GPIO_Init_1 */
 
   /* GPIO Ports Clock Enable */
@@ -421,23 +564,59 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, RED_LED1_Pin|RED_LED2_Pin|LCD_RST_Pin|LCD_BL_Pin
-                          |LCD_CS_Pin|LCD_DC_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, RED_LED1_Pin|RED_LED2_Pin|LCD_RST_Pin|LCD_CS_Pin
+                          |LCD_DC_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pins : RED_LED1_Pin RED_LED2_Pin LCD_RST_Pin LCD_BL_Pin
-                           LCD_CS_Pin LCD_DC_Pin */
-  GPIO_InitStruct.Pin = RED_LED1_Pin|RED_LED2_Pin|LCD_RST_Pin|LCD_BL_Pin
-                          |LCD_CS_Pin|LCD_DC_Pin;
+  /*Configure GPIO pin : User_Button_Pin */
+  GPIO_InitStruct.Pin = User_Button_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  HAL_GPIO_Init(User_Button_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : RED_LED1_Pin RED_LED2_Pin LCD_RST_Pin LCD_CS_Pin
+                           LCD_DC_Pin */
+  GPIO_InitStruct.Pin = RED_LED1_Pin|RED_LED2_Pin|LCD_RST_Pin|LCD_CS_Pin
+                          |LCD_DC_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+  /* EXTI interrupt init*/
+  HAL_NVIC_SetPriority(EXTI1_IRQn, 5, 0);
+  HAL_NVIC_EnableIRQ(EXTI1_IRQn);
 
 /* USER CODE BEGIN MX_GPIO_Init_2 */
 /* USER CODE END MX_GPIO_Init_2 */
 }
 
 /* USER CODE BEGIN 4 */
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+  currentMillis = HAL_GetTick();
+  if (GPIO_Pin == GPIO_PIN_1 && (currentMillis - previousMillis > 100))
+  {
+		TxData[0] = ADC_Buffer & 0xFF;  
+		TxData[1] = (ADC_Buffer >> 8) & 0xFF;
+		
+		if (HAL_CAN_AddTxMessage(&hcan2, &TxHeader, TxData, &TxMailbox) != HAL_OK)
+		{
+				Error_Handler ();
+		}
+		
+    previousMillis = currentMillis;
+  }
+}
+
+void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan) 
+{
+	HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_1);
+	datacheck = 1;
+  HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO0, &RxHeader, RxData);
+
+}
+
+
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
 {
 	if (hadc->Instance == ADC1) {
@@ -538,7 +717,7 @@ void StartTask02(void const * argument)
   /* Infinite loop */
   for(;;)
   {
-		HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_1);
+
 		osDelay(1000);
   }
   /* USER CODE END StartTask02 */

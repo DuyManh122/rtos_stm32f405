@@ -23,6 +23,7 @@
 "rtos_project\stm32f4xx_hal_cortex.o"
 "rtos_project\stm32f4xx_hal.o"
 "rtos_project\stm32f4xx_hal_exti.o"
+"rtos_project\stm32f4xx_hal_can.o"
 "rtos_project\stm32f4xx_hal_spi.o"
 "rtos_project\stm32f4xx_hal_tim.o"
 "rtos_project\stm32f4xx_hal_tim_ex.o"

@@ -6,10 +6,13 @@
 
 /* choose a Hardware SPI port to use. */
 #define ST7789_SPI_PORT hspi1
+
+
+#define LCD_BL_GPIO_Port GPIOB
+#define LCD_BL_Pin GPIO_PIN_6
+
 extern SPI_HandleTypeDef ST7789_SPI_PORT;
 
-/* choose whether use DMA or not */
-//#define USE_DMA
 
 /* If u need CS control, comment below*/
 //#define CFG_NO_CS
