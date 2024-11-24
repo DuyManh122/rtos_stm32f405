@@ -103,7 +103,9 @@ void StartTask03(void const * argument);
 uint32_t previousMillis = 0;
 uint32_t currentMillis = 0;
 
-uint8_t datacheck = 0;
+uint8_t datacheck = 0;  //use for debugging
+
+
 
 uint8_t TxData[8];
 uint8_t RxData[8];
@@ -391,7 +393,7 @@ static void MX_CAN2_Init(void)
   /* USER CODE END CAN2_Init 1 */
   hcan2.Instance = CAN2;
   hcan2.Init.Prescaler = 2;
-  hcan2.Init.Mode = CAN_MODE_LOOPBACK;
+  hcan2.Init.Mode = CAN_MODE_NORMAL;
   hcan2.Init.SyncJumpWidth = CAN_SJW_1TQ;
   hcan2.Init.TimeSeg1 = CAN_BS1_6TQ;
   hcan2.Init.TimeSeg2 = CAN_BS2_8TQ;
@@ -599,7 +601,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 		TxData[0] = ADC_Buffer & 0xFF;  
 		TxData[1] = (ADC_Buffer >> 8) & 0xFF;
 		
-		if (HAL_CAN_AddTxMessage(&hcan2, &TxHeader, TxData, &TxMailbox) != HAL_OK)
+		if (HAL_CAN_AddTxMessage(&hcan1, &TxHeader, TxData, &TxMailbox) != HAL_OK)
 		{
 				Error_Handler ();
 		}
