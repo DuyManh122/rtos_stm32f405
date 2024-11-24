@@ -72,6 +72,13 @@ osStaticThreadDef_t Task03ControlBlock;
 osMessageQId ADC_QNameHandle;
 uint8_t ADC_QNameBuffer[ 16 * sizeof( uint32_t ) ];
 osStaticMessageQDef_t ADC_QNameControlBlock;
+osMessageQId LCD_QNameHandle;
+uint8_t LCD_QNameBuffer[ 16 * sizeof( uint32_t ) ];
+osStaticMessageQDef_t LCD_QNameControlBlock;
+osSemaphoreId myBinarySem01Handle;
+osStaticSemaphoreDef_t myBinarySem01ControlBlock;
+osSemaphoreId myBinarySem02Handle;
+osStaticSemaphoreDef_t myBinarySem02ControlBlock;
 /* USER CODE BEGIN PV */
 uint32_t ADC_Buffer;
 uint32_t FLASH_Data;
@@ -105,7 +112,7 @@ uint32_t currentMillis = 0;
 
 uint8_t datacheck = 0;  //use for debugging
 
-
+uint16_t LCD_Data;
 
 uint8_t TxData[8];
 uint8_t RxData[8];
@@ -160,7 +167,6 @@ int main(void)
 	HAL_CAN_Start(&hcan2);
 	
 	/* Enable Can Interrupt */
-//	HAL_CAN_ActivateNotification(&hcan2, CAN_IT_RX_FIFO0_MSG_PENDING);
 	HAL_CAN_ActivateNotification(&hcan2, CAN_IT_RX_FIFO0_MSG_PENDING);
 	
 	TxHeader.DLC = 2; 						// DataLength
@@ -173,6 +179,15 @@ int main(void)
   /* USER CODE BEGIN RTOS_MUTEX */
   /* add mutexes, ... */
   /* USER CODE END RTOS_MUTEX */
+
+  /* Create the semaphores(s) */
+  /* definition and creation of myBinarySem01 */
+  osSemaphoreStaticDef(myBinarySem01, &myBinarySem01ControlBlock);
+  myBinarySem01Handle = osSemaphoreCreate(osSemaphore(myBinarySem01), 1);
+
+  /* definition and creation of myBinarySem02 */
+  osSemaphoreStaticDef(myBinarySem02, &myBinarySem02ControlBlock);
+  myBinarySem02Handle = osSemaphoreCreate(osSemaphore(myBinarySem02), 1);
 
   /* USER CODE BEGIN RTOS_SEMAPHORES */
   /* add semaphores, ... */
@@ -187,13 +202,17 @@ int main(void)
   osMessageQStaticDef(ADC_QName, 16, uint32_t, ADC_QNameBuffer, &ADC_QNameControlBlock);
   ADC_QNameHandle = osMessageCreate(osMessageQ(ADC_QName), NULL);
 
+  /* definition and creation of LCD_QName */
+  osMessageQStaticDef(LCD_QName, 16, uint32_t, LCD_QNameBuffer, &LCD_QNameControlBlock);
+  LCD_QNameHandle = osMessageCreate(osMessageQ(LCD_QName), NULL);
+
   /* USER CODE BEGIN RTOS_QUEUES */
   /* add queues, ... */
   /* USER CODE END RTOS_QUEUES */
 
   /* Create the thread(s) */
   /* definition and creation of Task01 */
-  osThreadStaticDef(Task01, StartTask01, osPriorityAboveNormal, 0, 1024, Task1Buffer, &Task1ControlBlock);
+  osThreadStaticDef(Task01, StartTask01, osPriorityNormal, 0, 1024, Task1Buffer, &Task1ControlBlock);
   Task01Handle = osThreadCreate(osThread(Task01), NULL);
 
   /* definition and creation of Task02 */
@@ -598,24 +617,27 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
   currentMillis = HAL_GetTick();
   if (GPIO_Pin == GPIO_PIN_1 && (currentMillis - previousMillis > 100))
   {
-		TxData[0] = ADC_Buffer & 0xFF;  
-		TxData[1] = (ADC_Buffer >> 8) & 0xFF;
+		previousMillis = currentMillis;
 		
-		if (HAL_CAN_AddTxMessage(&hcan1, &TxHeader, TxData, &TxMailbox) != HAL_OK)
-		{
-				Error_Handler ();
-		}
-		
-    previousMillis = currentMillis;
+		//Release Semaphore
+		osSemaphoreRelease(myBinarySem01Handle);
   }
 }
 
 void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan) 
 {
-	HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_1);
-	datacheck = 1;
-  HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO0, &RxHeader, RxData);
+		//Release Semaphore
+		datacheck = 2;
+		HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_1);
+	
+		//Get Message from can 2
+		HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO0, &RxHeader, RxData);
 
+		//assign to LCD_Data variable
+		LCD_Data = (RxData[1] << 8) + RxData[0];
+	
+		osMessagePut(LCD_QNameHandle, LCD_Data, 50);
+		osSemaphoreRelease(myBinarySem02Handle);
 }
 
 
@@ -719,8 +741,19 @@ void StartTask02(void const * argument)
   /* Infinite loop */
   for(;;)
   {
-
-		osDelay(1000);
+			//Wait binary semaphore01 release
+			osSemaphoreWait(myBinarySem01Handle, osWaitForever);
+			HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_1);
+			
+			
+			//Get Data From Flash in task01
+			TxData[0] = FLASH_Data & 0xFF;  
+			TxData[1] = (FLASH_Data >> 8) & 0xFF;
+			datacheck = 1;
+			if (HAL_CAN_AddTxMessage(&hcan1, &TxHeader, TxData, &TxMailbox) != HAL_OK)
+			{
+					Error_Handler ();
+			}
   }
   /* USER CODE END StartTask02 */
 }
@@ -738,11 +771,24 @@ void StartTask03(void const * argument)
   /* Infinite loop */
   for(;;)
   {
+		
+				//Wait binary semaphore02 release
+				osSemaphoreWait(myBinarySem02Handle, osWaitForever);
+		
+				HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_1);
+				
+				//This variable just use for debugging
+				datacheck = 1;
 
-		char S[20];
-		sprintf(S,"ADC value is: %d / 4095", ADC_Buffer);
-		ST7789_WriteString(40,150, S, Font_7x10, WHITE, BLACK);
-		osDelay(1000);
+				osEvent event = osMessageGet(LCD_QNameHandle, osWaitForever);
+				
+
+				char S[20];
+				sprintf(S,"ADC value is: %d / 4095", event.value.v);
+				
+				
+				ST7789_Fill_Color(WHITE);
+				ST7789_WriteString(40,150, S, Font_7x10, WHITE, BLACK);
   }
   /* USER CODE END StartTask03 */
 }
