@@ -1,0 +1,12 @@
+rtos_project\list.o: ../Middlewares/Third_Party/FreeRTOS/Source/list.c
+rtos_project\list.o: D:\KeilC\KeilCDownload\ARM\ARM_Compiler_5\Bin\..\include\stdlib.h
+rtos_project\list.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
+rtos_project\list.o: D:\KeilC\KeilCDownload\ARM\ARM_Compiler_5\Bin\..\include\stddef.h
+rtos_project\list.o: D:\KeilC\KeilCDownload\ARM\ARM_Compiler_5\Bin\..\include\stdint.h
+rtos_project\list.o: ../Core/Inc/FreeRTOSConfig.h
+rtos_project\list.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h
+rtos_project\list.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h
+rtos_project\list.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h
+rtos_project\list.o: ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F/portmacro.h
+rtos_project\list.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h
+rtos_project\list.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
